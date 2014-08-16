@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1406130584 source:f:\c++\test3_1130310616_уе╧зн║\streambuffer.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	"StreamBuffer.h"
+
+1408092476 f:\c++\test3_1130310616_уе╧зн║\streambuffer.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<cstring>
+	<queue>
+	<utility>
+
+1406134870 source:f:\c++\test3_1130310616_уе╧зн║\experiment03.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"StreamBuffer.h"
+
