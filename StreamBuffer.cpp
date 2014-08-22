@@ -46,7 +46,7 @@ int StreamBuffer::ReceiveDate(unsigned int offset, unsigned int bytes, char *pDa
     {
         memcpy(m_pData, head, m_iBufferLen - (head - m_pData));
         tail -= head - m_pData;
-        m_offset += head - m_pData;
+        m_offset += head - m_pData;//修正偏移量
         head = m_pData;
     }
 
@@ -55,6 +55,13 @@ int StreamBuffer::ReceiveDate(unsigned int offset, unsigned int bytes, char *pDa
         m_pData[iBytes+offset-m_offset] = pData[iBytes];//放入缓冲区
 
     packInfo.push(make_pair(offset, bytes));    // 将数据包信息存入优先队列
+
+    if (bytes+offset-m_offset > m_iBufferLen*0.8)//超过缓存区一定部分而头部连续数据还未写入就放弃
+    {
+        head = m_pData - m_offset + packInfo. top().first;//下一段连续数据的开始位置
+        tail = head + packInfo.top().second;//下一段连续数据的末尾
+        packInfo.pop();//弹出队首元素
+    }
 
    return iBytes;// bytes the buffer saved
 }
