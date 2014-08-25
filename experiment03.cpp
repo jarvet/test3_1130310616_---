@@ -1,4 +1,4 @@
-#include<iostream>
+﻿#include<iostream>
 #include<stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -31,8 +31,8 @@ void	GenDisOrder(int iSendOrder[],int iPacketNum)
 
 int main()
 {
-	char srcfileName[500]="G:\\temp\\song1.mp3";
-	char dstfileName[500]="G:\\temp\\result.mp3";
+	char srcfileName[500]="../media/source.mp3";
+	char dstfileName[500]="../media/dest.mp3";
 	FILE* fpSrcFile = NULL;
 	FILE* fpDstFile = NULL;
 	const int MTU =  1500;//最大传输单元，网络术语，表示一个数据包大最大尺寸，单位：字节

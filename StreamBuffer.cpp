@@ -1,4 +1,4 @@
-#include<iostream>
+﻿#include<iostream>
 #include<stdio.h>
 #include <stdlib.h>
 #include "StreamBuffer.h"// for Code::Block
@@ -50,17 +50,31 @@ int StreamBuffer::ReceiveDate(unsigned int offset, unsigned int bytes, char *pDa
         head = m_pData;
     }
 
-
-    for ( ; iBytes<bytes; iBytes++)
-        m_pData[iBytes+offset-m_offset] = pData[iBytes];//放入缓冲区
-
-    packInfo.push(make_pair(offset, bytes));    // 将数据包信息存入优先队列
-
-    if (bytes+offset-m_offset > m_iBufferLen*0.8)//超过缓存区一定部分而头部连续数据还未写入就放弃
+    if (offset<m_offset)//更正实验二中的错误，offset<m_offset时把数据放在缓冲区头部
     {
-        head = m_pData - m_offset + packInfo. top().first;//下一段连续数据的开始位置
-        tail = head + packInfo.top().second;//下一段连续数据的末尾
-        packInfo.pop();//弹出队首元素
+        for (int i=m_iBufferLen-bytes; i>=0; i--)
+            m_pData[i+bytes] = m_pData[i];
+        memcpy(m_pData,pData,bytes);
+
+        head = m_pData;
+        tail = m_pData + bytes;
+
+        packInfo.push(make_pair(offset,bytes));
+    }
+    else
+    {
+        for ( ; iBytes<bytes; iBytes++)
+            m_pData[iBytes+offset-m_offset] = pData[iBytes];//放入缓冲区
+
+        packInfo.push(make_pair(offset, bytes));    // 将数据包信息存入优先队列
+
+        if (bytes+offset-m_offset > m_iBufferLen*0.8)//超过缓存区一定部分而头部连续数据还未写入就放弃
+        {
+            head = m_pData - m_offset + packInfo. top().first;//下一段连续数据的开始位置
+            tail = head + packInfo.top().second;//下一段连续数据的末尾
+            packInfo.pop();//弹出队首元素
+        }
+
     }
 
    return iBytes;// bytes the buffer saved
